@@ -122,3 +122,7 @@ status: {}
 ```
 k create cm mongodb-configmap --from-literal=database_url=mongodb-service
 ```
+
+```
+k expose deployment mongo-express --name=mongo-express-service --port=8081 --target-port=8081 --protocol='TCP'
+```
