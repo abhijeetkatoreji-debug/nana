@@ -119,10 +119,56 @@ status: {}
 
 ## config-map (mongo-configmap)
 
-```
+```shell
 k create cm mongodb-configmap --from-literal=database_url=mongodb-service
 ```
 
+```shell
+k expose deployment mongo-express --type=NodePort  --name=mongo-express-service --port=8081 --target-port=8081 --protocol='TCP' -oyaml --dry-run=client
 ```
-k expose deployment mongo-express --name=mongo-express-service --port=8081 --target-port=8081 --protocol='TCP'
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mongo-express
+  name: mongo-express-service
+spec:
+  ports:
+  - port: 8081
+    protocol: TCP
+    targetPort: 8081
+    nodePort: 30000
+  selector:
+    app: mongo-express
+  type: LoadBalancer
+status:
+  loadBalancer: {}
+```
+
+## without type loadbalancer
+<img width="1072" height="178" alt="image" src="https://github.com/user-attachments/assets/df55666f-41e1-487b-b97b-8c20c52437a6" />
+
+## With Type LoadBalancer and nodeport assigned, external IP is in pending state
+<img width="764" height="163" alt="image" src="https://github.com/user-attachments/assets/869e412c-2657-4e5b-bfc2-c81a399b0322" />
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mongo-express
+  name: mongo-express-service
+spec:
+  ports:
+  - port: 8081
+    protocol: TCP
+    targetPort: 8081
+    nodePort: 30000
+  selector:
+    app: mongo-express
+  type: LoadBalancer
+status:
+  loadBalancer: {}
+
 ```
