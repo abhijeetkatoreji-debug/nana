@@ -31,7 +31,7 @@ spec:
         - name: PORT
           value: "8080"
         resources: {}
-----
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -47,7 +47,7 @@ spec:
     protocol: TCP
     targetPort: 8080
 
-----
+---
 
 apiVersion: apps/v1
 kind: Deployment
@@ -76,7 +76,7 @@ spec:
           value: "8080"
         - name: PRODUCT_CATALOG_SERVICE_ADDR
           value: "productcatalogservice:3550"
-----
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -91,9 +91,7 @@ spec:
   - port: 8080
     protocol: TCP
     targetPort: 8080
-
-----
-
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -120,7 +118,7 @@ spec:
         - name: PORT
           value: "3550"
         resources: {}
-----
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -135,9 +133,7 @@ spec:
   - port: 3550
     protocol: TCP
     targetPort: 3550
-
-----
-
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -166,7 +162,7 @@ spec:
         - name: DISABLE_PROFILER
           value: "1"
         resources: {}
-----
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -181,9 +177,7 @@ spec:
   - port: 50051
     protocol: TCP
     targetPort: 50051
-
-----
-
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -212,7 +206,7 @@ spec:
         - name: DISABLE_PROFILER
           value: "1"
         resources: {}
-----
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -227,9 +221,7 @@ spec:
   - port: 7000
     protocol: TCP
     targetPort: 7000
-
-----
-
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -252,7 +244,7 @@ spec:
         name: service
         ports:
         - containerPort: 50051
-----
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -267,9 +259,7 @@ spec:
   - port: 50051
     protocol: TCP
     targetPort: 50051
-
-----
-
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -296,7 +286,7 @@ spec:
         - name: PORT
           value: "9555"
         resources: {}
-----
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -311,9 +301,7 @@ spec:
   - port: 9555
     protocol: TCP
     targetPort: 9555
-
-----
-
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -342,7 +330,7 @@ spec:
         - name: RESDIS_ADDR
           value: "redis-cart:6379"
         resources: {}
-----
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -357,9 +345,7 @@ spec:
   - port: 7070
     protocol: TCP
     targetPort: 7070
-
-----
-
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -388,7 +374,7 @@ spec:
       volume:
       - name: redis-data
         emptyDir: {}
-----
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -403,9 +389,7 @@ spec:
   - port: 6379
     protocol: TCP
     targetPort: 6379
-
-----
-
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -443,8 +427,10 @@ spec:
           value: "currencyservice:7070"
         - name: CART_SERVICE_ADDR
           value: "cartservice:7070"
+        - name: AD_SERVICE_ADDR
+          values: "adservice:955"
         resources: {}
-----
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -459,9 +445,7 @@ spec:
   - port: 5050
     protocol: TCP
     targetPort: 5050
-
-----
-
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -487,8 +471,22 @@ spec:
         env:
         - name: PORT
           value: "8080"
+        - name: PRODUCT_CATALOG_SERVICE_ADDR
+          value: "productcatalogservice:3550"
+        - name: SHIPPING_SERVICE_ADDR
+          value: "shippingservuce:50051"
+        - name: PAYMENT_SERVICE_ADDR
+          value: "paymentservice:50051"
+        - name: EMAIL_SERVICE_ADDR
+          value: "emailservice:5000"
+        - name: CURRENCY_SERVICE_ADDR
+          value: "currencyservice:7070"
+        - name: CART_SERVICE_ADDR
+          value: "cartservice:7070"
+        - name: AD_SERVICE_ADDR
+          values: "adservice:955"
         resources: {}
-----
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -496,14 +494,14 @@ metadata:
     app: frontend
   name: frontend
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: frontend
   ports:
   - port: 8080
     protocol: TCP
     targetPort: 8080
+    nodePort: 30007
 
-----
 
 ```
