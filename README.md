@@ -56,7 +56,7 @@ status: {}
 ```
 
 
-k expose deployment mongo-db --port=27017 --target-port=27017 --protocol='TCP'
+k expose deployment mongo-db --port=27017 --target-port=27017 --protocol='TCP' --name=mongodb-service
 
 ----
 config
