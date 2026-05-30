@@ -580,4 +580,19 @@ kubectl apply -f your-manifest.yaml
 kubectl rollout restart deployment frontend
 kubectl get pods -w
 The frontend pod should reach `Running` and stay up.
+---
+
+
+```
+minikube service frontend --url
+minikube service frontend
+kubectl port-forward svc/frontend 8080:8080
+
+```
+
+<img width="1085" height="576" alt="image" src="https://github.com/user-attachments/assets/a7bda994-2add-41d5-8419-25f0ef3d41b4" />
+<img width="546" height="210" alt="image" src="https://github.com/user-attachments/assets/34482bc8-6c9d-4bc2-b523-bf958f6b6902" />
+<img width="1919" height="1031" alt="image" src="https://github.com/user-attachments/assets/e4258f54-b46e-48f1-972f-40cfd5bc0b33" />
+
+
 
