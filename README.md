@@ -1,4 +1,28 @@
 # Nana
+
+Minikube in Cloud Shell (fastest, free)
+
+```
+https://shell.cloud.google.com/?pli=1&show=terminal
+```
+
+```shell
+# Pick/create a project if needed
+gcloud config set project YOUR_PROJECT_ID
+
+# Start a local cluster in Cloud Shell
+minikube start --driver=docker
+
+# Confirm it works
+kubectl get nodes
+
+# Deploy your manifest
+kubectl create -f config.yaml
+
+# Get a URL to open the shop
+minikube service frontend --url
+```
+
 https://github.com/GoogleCloudPlatform/microservices-demo/tree/main/release
 
 Image version: v0.10.5
