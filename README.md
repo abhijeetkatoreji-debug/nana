@@ -1,4 +1,8 @@
 # Nana
+https://github.com/GoogleCloudPlatform/microservices-demo/tree/main/release
+
+Image version: v0.10.5
+<img width="1907" height="902" alt="image" src="https://github.com/user-attachments/assets/93d975e7-02aa-4801-b345-5b5c7607c376" />
 
 ```yaml
 apiVersion: apps/v1
@@ -19,7 +23,7 @@ spec:
         app: emailservice
     spec:
       containers:
-      - image: gcr.io/google-samples/microservices-demo/emailservice:v8.8.0
+      - image: gcr.io/google-samples/microservices-demo/emailservice:v0.10.5
         name: service
         ports:
         - containerPort: 8080
@@ -63,7 +67,7 @@ spec:
         app: recommendationservice
     spec:
       containers:
-      - image: gcr.io/google-samples/microservices-demo/recommendationservice:v8.8.0
+      - image: gcr.io/google-samples/microservices-demo/recommendationservice:v0.10.5
         name: service
         ports:
         - containerPort: 8080
@@ -108,7 +112,7 @@ spec:
         app: productcatalogservice
     spec:
       containers:
-      - image: gcr.io/google-samples/microservices-demo/productcatalogservice:v8.8.0
+      - image: gcr.io/google-samples/microservices-demo/productcatalogservice:v0.10.5
         name: service
         ports:
         - containerPort: 3550
@@ -152,13 +156,15 @@ spec:
         app: paymentservice
     spec:
       containers:
-      - image: gcr.io/google-samples/microservices-demo/paymentservice:v8.8.0
+      - image: gcr.io/google-samples/microservices-demo/paymentservice:v0.10.5
         name: service
         ports:
         - containerPort: 50051
         env:
         - name: PORT
           value: "50051"
+        - name: DISABLE_PROFILER
+          value: "1"
         resources: {}
 ----
 apiVersion: v1
@@ -196,13 +202,15 @@ spec:
         app: currencyservice
     spec:
       containers:
-      - image: gcr.io/google-samples/microservices-demo/currencyservice:v8.8.0
+      - image: gcr.io/google-samples/microservices-demo/currencyservice:v0.10.5
         name: service
         ports:
         - containerPort: 7000
         env:
         - name: PORT
           value: "7000"
+        - name: DISABLE_PROFILER
+          value: "1"
         resources: {}
 ----
 apiVersion: v1
@@ -240,7 +248,7 @@ spec:
         app: shippingservice
     spec:
       containers:
-      - image: gcr.io/google-samples/microservices-demo/shippingservice:v8.8.0
+      - image: gcr.io/google-samples/microservices-demo/shippingservice:v0.10.5
         name: service
         ports:
         - containerPort: 50051
@@ -280,7 +288,7 @@ spec:
         app: adservice
     spec:
       containers:
-      - image: gcr.io/google-samples/microservices-demo/adservice:v8.8.0
+      - image: gcr.io/google-samples/microservices-demo/adservice:v0.10.5
         name: service
         ports:
         - containerPort: 9555
@@ -324,7 +332,7 @@ spec:
         app: cartservice
     spec:
       containers:
-      - image: gcr.io/google-samples/microservices-demo/cartservice:v8.8.0
+      - image: gcr.io/google-samples/microservices-demo/cartservice:v0.10.5
         name: service
         ports:
         - containerPort: 7070
@@ -332,7 +340,7 @@ spec:
         - name: PORT
           value: "7070"
         - name: RESDIS_ADDR
-          value: "XXXX"
+          value: "redis-cart:6379"
         resources: {}
 ----
 apiVersion: v1
@@ -356,43 +364,45 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: emailservice
-  name: emailservice
+    app: redis-cart
+  name: redis-cart
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: emailservice
+      app: redis-cart
   strategy: {}
   template:
     metadata:
       labels:
-        app: emailservice
+        app: redis-cart
     spec:
       containers:
-      - image: gcr.io/google-samples/microservices-demo/emailservice:v8.8.0
-        name: emailservice
+      - image: redis:alpine
+        name: redis-cart
         ports:
-        - containerPort: 8080
-        env:
-        - name: PORT
-          value: "8080"
-        resources: {}
+        - containerPort: 6379
+        volumeMounts:
+        - name: redis-data
+          mountPath: /data
+      volume:
+      - name: redis-data
+        emptyDir: {}
 ----
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: emailservice
-  name: emailservice
+    app: redis-cart
+  name: redis-cart
 spec:
   type: ClusterIP
   selector:
-    app: emailservice
+    app: redis-cart
   ports:
-  - port: 5000
+  - port: 6379
     protocol: TCP
-    targetPort: 8080
+    targetPort: 6379
 
 ----
 
@@ -400,43 +410,55 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: emailservice
-  name: emailservice
+    app: checkoutservice
+  name: checkoutservice
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: emailservice
+      app: checkoutservice
   strategy: {}
   template:
     metadata:
       labels:
-        app: emailservice
+        app: checkoutservice
     spec:
       containers:
-      - image: gcr.io/google-samples/microservices-demo/emailservice:v8.8.0
-        name: emailservice
+      - image: gcr.io/google-samples/microservices-demo/checkoutservice:v0.10.5
+        name: service
         ports:
-        - containerPort: 8080
+        - containerPort: 5050
         env:
         - name: PORT
-          value: "8080"
+          value: "5050"
+        - name: PRODUCT_CATALOG_SERVICE_ADDR
+          value: "productcatalogservice:3550"
+        - name: SHIPPING_SERVICE_ADDR
+          value: "shippingservuce:50051"
+        - name: PAYMENT_SERVICE_ADDR
+          value: "paymentservice:50051"
+        - name: EMAIL_SERVICE_ADDR
+          value: "emailservice:5000"
+        - name: CURRENCY_SERVICE_ADDR
+          value: "currencyservice:7070"
+        - name: CART_SERVICE_ADDR
+          value: "cartservice:7070"
         resources: {}
 ----
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: emailservice
-  name: emailservice
+    app: checkoutservice
+  name: checkoutservice
 spec:
   type: ClusterIP
   selector:
-    app: emailservice
+    app: checkoutservice
   ports:
-  - port: 5000
+  - port: 5050
     protocol: TCP
-    targetPort: 8080
+    targetPort: 5050
 
 ----
 
@@ -444,22 +466,22 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: emailservice
-  name: emailservice
+    app: frontend
+  name: frontend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: emailservice
+      app: frontend
   strategy: {}
   template:
     metadata:
       labels:
-        app: emailservice
+        app: frontend
     spec:
       containers:
-      - image: gcr.io/google-samples/microservices-demo/emailservice:v8.8.0
-        name: emailservice
+      - image: gcr.io/google-samples/microservices-demo/frontend:v0.10.5
+        name: service
         ports:
         - containerPort: 8080
         env:
@@ -471,14 +493,14 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: emailservice
-  name: emailservice
+    app: frontend
+  name: frontend
 spec:
   type: ClusterIP
   selector:
-    app: emailservice
+    app: frontend
   ports:
-  - port: 5000
+  - port: 8080
     protocol: TCP
     targetPort: 8080
 
