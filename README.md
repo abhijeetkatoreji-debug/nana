@@ -23,7 +23,7 @@ spec:
         app: emailservice
     spec:
       containers:
-      - image: gcr.io/google-samples/microservices-demo/emailservice:v0.10.5
+      - image: us-central1-docker.pkg.dev/google-samples/microservices-demo/emailservice:v0.10.5
         name: service
         ports:
         - containerPort: 8080
@@ -67,7 +67,7 @@ spec:
         app: recommendationservice
     spec:
       containers:
-      - image: gcr.io/google-samples/microservices-demo/recommendationservice:v0.10.5
+      - image: us-central1-docker.pkg.dev/google-samples/microservices-demo/recommendationservice:v0.10.5
         name: service
         ports:
         - containerPort: 8080
@@ -110,7 +110,7 @@ spec:
         app: productcatalogservice
     spec:
       containers:
-      - image: gcr.io/google-samples/microservices-demo/productcatalogservice:v0.10.5
+      - image: us-central1-docker.pkg.dev/google-samples/microservices-demo/productcatalogservice:v0.10.5
         name: service
         ports:
         - containerPort: 3550
@@ -152,7 +152,7 @@ spec:
         app: paymentservice
     spec:
       containers:
-      - image: gcr.io/google-samples/microservices-demo/paymentservice:v0.10.5
+      - image: us-central1-docker.pkg.dev/google-samples/microservices-demo/paymentservice:v0.10.5
         name: service
         ports:
         - containerPort: 50051
@@ -196,7 +196,7 @@ spec:
         app: currencyservice
     spec:
       containers:
-      - image: gcr.io/google-samples/microservices-demo/currencyservice:v0.10.5
+      - image: us-central1-docker.pkg.dev/google-samples/microservices-demo/currencyservice:v0.10.5
         name: service
         ports:
         - containerPort: 7000
@@ -240,7 +240,7 @@ spec:
         app: shippingservice
     spec:
       containers:
-      - image: gcr.io/google-samples/microservices-demo/shippingservice:v0.10.5
+      - image: us-central1-docker.pkg.dev/google-samples/microservices-demo/shippingservice:v0.10.5
         name: service
         ports:
         - containerPort: 50051
@@ -278,7 +278,7 @@ spec:
         app: adservice
     spec:
       containers:
-      - image: gcr.io/google-samples/microservices-demo/adservice:v0.10.5
+      - image: us-central1-docker.pkg.dev/google-samples/microservices-demo/adservice:v0.10.5
         name: service
         ports:
         - containerPort: 9555
@@ -320,7 +320,7 @@ spec:
         app: cartservice
     spec:
       containers:
-      - image: gcr.io/google-samples/microservices-demo/cartservice:v0.10.5
+      - image: us-central1-docker.pkg.dev/google-samples/microservices-demo/cartservice:v0.10.5
         name: service
         ports:
         - containerPort: 7070
@@ -408,7 +408,7 @@ spec:
         app: checkoutservice
     spec:
       containers:
-      - image: gcr.io/google-samples/microservices-demo/checkoutservice:v0.10.5
+      - image: us-central1-docker.pkg.dev/google-samples/microservices-demo/checkoutservice:v0.10.5
         name: service
         ports:
         - containerPort: 5050
@@ -462,7 +462,7 @@ spec:
         app: frontend
     spec:
       containers:
-      - image: gcr.io/google-samples/microservices-demo/frontend:v0.10.5
+      - image: us-central1-docker.pkg.dev/google-samples/microservices-demo/frontend:v0.10.5
         name: service
         ports:
         - containerPort: 8080
