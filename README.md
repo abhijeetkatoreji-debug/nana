@@ -1,5 +1,7 @@
 # nana
 
+(https://www.bilibili.com/video/BV1zvg2z3EzJ?spm_id_from=333.788.videopod.episodes&p=31)
+
 ```
 echo -n "username" | base64
 echo -n "password" | base64
