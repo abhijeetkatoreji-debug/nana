@@ -487,7 +487,10 @@ spec:
           value: "recommendationservice:8080"
         - name: CHECKOUT_SERVICE_ADDR
           value: "checkoutservice:5050"
-
+        - name: SHOPPING_ASSISTANT_SERVICE_ADDR
+          value: "shoppingassistantservice:80"
+        - name: ENABLE_PROFILER
+          value: "0"
         resources: {}
 ---
 apiVersion: v1
@@ -508,3 +511,49 @@ spec:
 
 
 ```
+
+
+The frontend **v0.10.5** image requires `SHOPPING_ASSISTANT_SERVICE_ADDR` at startup — it calls `mustMapEnv`, so the pod panics if it's missing.
+
+Add this to your frontend `env` block:
+```yaml
+        - name: SHOPPING_ASSISTANT_SERVICE_ADDR
+          value: "shoppingassistantservice:80"
+        - name: ENABLE_PROFILER
+          value: "0"
+```
+You do not need to deploy `shoppingassistantservice` for the shop to run. That service is optional (AI assistant). The env var must exist, but the assistant only activates if you also set `ENABLE_ASSISTANT: "true"`.
+
+Updated frontend deployment env section:
+```yaml
+        env:
+        - name: PORT
+          value: "8080"
+        - name: PRODUCT_CATALOG_SERVICE_ADDR
+          value: "productcatalogservice:3550"
+        - name: CURRENCY_SERVICE_ADDR
+          value: "currencyservice:7000"
+        - name: CART_SERVICE_ADDR
+          value: "cartservice:7070"
+        - name: RECOMMENDATION_SERVICE_ADDR
+          value: "recommendationservice:8080"
+        - name: SHIPPING_SERVICE_ADDR
+          value: "shippingservice:50051"
+        - name: CHECKOUT_SERVICE_ADDR
+          value: "checkoutservice:5050"
+        - name: AD_SERVICE_ADDR
+          value: "adservice:9555"
+        - name: SHOPPING_ASSISTANT_SERVICE_ADDR
+          value: "shoppingassistantservice:80"
+        - name: ENABLE_PROFILER
+          value: "0"
+```          
+Note: `PAYMENT_SERVICE_ADDR` and `EMAIL_SERVICE_ADDR` are not needed on frontend in the official manifest (checkout handles those). They won't cause a crash, but you can remove them to match upstream.
+
+After applying:
+
+kubectl apply -f your-manifest.yaml
+kubectl rollout restart deployment frontend
+kubectl get pods -w
+The frontend pod should reach `Running` and stay up.
+
