@@ -54,7 +54,12 @@ spec:
         env:
         - name: PORT
           value: "8080"
-        resources: {}
+        livenessProbe:
+          grpc:
+            port: 8080
+          periodSeconds: 5
+         
+        
 ---
 apiVersion: v1
 kind: Service
@@ -95,6 +100,10 @@ spec:
         name: service
         ports:
         - containerPort: 8080
+        livenessProbe:
+          grpc:
+            port: 8080
+          periodSeconds: 5
         env:
         - name: PORT
           value: "8080"
@@ -141,7 +150,11 @@ spec:
         env:
         - name: PORT
           value: "3550"
-        resources: {}
+        livenessProbe:
+          grpc:
+            port: 3550
+          periodSeconds: 5
+        
 ---
 apiVersion: v1
 kind: Service
@@ -185,7 +198,10 @@ spec:
           value: "50051"
         - name: DISABLE_PROFILER
           value: "1"
-        resources: {}
+        livenessProbe:
+          grpc:
+            port: 3550
+          periodSeconds: 5
 ---
 apiVersion: v1
 kind: Service
@@ -229,7 +245,10 @@ spec:
           value: "7000"
         - name: DISABLE_PROFILER
           value: "1"
-        resources: {}
+        livenessProbe:
+          grpc:
+            port: 7000
+          periodSeconds: 5        
 ---
 apiVersion: v1
 kind: Service
@@ -268,6 +287,10 @@ spec:
         name: service
         ports:
         - containerPort: 50051
+        livenessProbe:
+          grpc:
+            port: 50051
+          periodSeconds: 5
 ---
 apiVersion: v1
 kind: Service
@@ -309,7 +332,10 @@ spec:
         env:
         - name: PORT
           value: "9555"
-        resources: {}
+        livenessProbe:
+          grpc:
+            port: 9555
+          periodSeconds: 5
 ---
 apiVersion: v1
 kind: Service
@@ -353,7 +379,10 @@ spec:
           value: "7070"
         - name: REDIS_ADDR
           value: "redis-cart:6379"
-        resources: {}
+        livenessProbe:
+          grpc:
+            port: 7070
+          periodSeconds: 5
 ---
 apiVersion: v1
 kind: Service
@@ -395,6 +424,10 @@ spec:
         volumeMounts:
         - name: redis-data
           mountPath: /data
+        livenessProbe:
+          grpc:
+            port: 6379
+          periodSeconds: 5
       volumes:
       - name: redis-data
         emptyDir: {}
@@ -434,6 +467,10 @@ spec:
       containers:
       - image: us-central1-docker.pkg.dev/google-samples/microservices-demo/checkoutservice:v0.10.5
         name: service
+        livenessProbe:
+          grpc:
+            port: 5050
+          periodSeconds: 5
         ports:
         - containerPort: 5050
         env:
@@ -451,7 +488,7 @@ spec:
           value: "currencyservice:7000"
         - name: CART_SERVICE_ADDR
           value: "cartservice:7070"
-        resources: {}
+        
 ---
 apiVersion: v1
 kind: Service
@@ -490,6 +527,10 @@ spec:
         name: service
         ports:
         - containerPort: 8080
+        livenessProbe:
+          grpc:
+            port: 8080
+          periodSeconds: 5
         env:
         - name: PORT
           value: "8080"
@@ -515,7 +556,7 @@ spec:
           value: "shoppingassistantservice:80"
         - name: ENABLE_PROFILER
           value: "0"
-        resources: {}
+        
 ---
 apiVersion: v1
 kind: Service
