@@ -210,11 +210,11 @@ spec:
           value: "1"
         livenessProbe:
           grpc:
-            port: 3550
+            port: 50051
           periodSeconds: 5
         readinessProbe:
           grpc:
-            port: 3550
+            port: 50051
           periodSeconds: 5
 ---
 apiVersion: v1
