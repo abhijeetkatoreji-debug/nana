@@ -1,0 +1,6 @@
+releases: 
+  - name: emailservice
+    chart: charts/microservice
+    values:
+      - values/email-service-values.yaml
+      - appReplicas: "1"
