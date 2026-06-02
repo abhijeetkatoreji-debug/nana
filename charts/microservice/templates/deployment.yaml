@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ .Values.appName }}
+  name: {{ .Values.appName }}
+spec:
+  replicas: {{ .Values.appReplicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.appName }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appName }}
+    spec:
+      containers:
+      - image: "{{ .Values.appImage }}:{{ .Values.appVersion }}"
+        name: {{ .Values.appName }}
+        ports:
+        - containerPort: {{ .Values.containerPort }}
+          protocol: TCP
+        env:
+        {{- range .Values.containerEnvVars }}
+        - name: {{ .name }}
+          value: {{ .value | quote }}
+        {{- end }}
+
